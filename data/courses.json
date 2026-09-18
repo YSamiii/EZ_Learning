@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "1.0",
+  "app": { "name": "熹熹探索", "companionApp": "熹熹启蒙 App", "deepLink": "xixiqimeng://" },
+  "courses": [
+    {
+      "id": "seed-journey",
+      "category": "科学小发现",
+      "title": "一粒种子的旅行",
+      "subtitle": "种子为什么会长成植物？",
+      "age": "3–6 岁",
+      "duration": "8 分钟",
+      "color": "mint",
+      "emoji": "🌱",
+      "steps": [
+        { "title": "看看种子", "body": "它小小的，里面藏着新生命。", "emoji": "🔎" },
+        { "title": "喝一口水", "body": "水会叫醒沉睡的种子。", "emoji": "💧" },
+        { "title": "向阳生长", "body": "阳光和空气，帮它长出嫩芽。", "emoji": "☀️" }
+      ],
+      "printable": { "id": "seed-observation", "title": "我的种子观察日记", "description": "连续 7 天，画下小种子的变化。" }
+    },
+    {
+      "id": "shadow-play",
+      "category": "光的游戏",
+      "title": "影子会变魔术",
+      "subtitle": "光从哪里来？",
+      "age": "3–6 岁",
+      "duration": "6 分钟",
+      "color": "sun",
+      "emoji": "🦊",
+      "steps": [
+        { "title": "找一找光", "body": "窗边、手电筒和太阳都会发光。", "emoji": "✨" },
+        { "title": "做个影子", "body": "把小手放在光前面试试看。", "emoji": "🖐️" }
+      ],
+      "printable": { "id": "shadow-theater", "title": "小小影子剧场", "description": "剪下角色，和家人演一场影子戏。" }
+    }
+  ],
+  "characters": [
+    { "id": "sun", "hanzi": "日", "pinyin": "rì", "word": "太阳", "hint": "像一扇有光的窗户" },
+    { "id": "tree", "hanzi": "木", "pinyin": "mù", "word": "树木", "hint": "一棵伸开枝丫的小树" },
+    { "id": "person", "hanzi": "人", "pinyin": "rén", "word": "家人", "hint": "像一个正在走路的人" }
+  ]
+}

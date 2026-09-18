@@ -1,0 +1,90 @@
+const app = document.querySelector('#app');
+const state = { page: 'home', courseId: 'seed-journey', gameIndex: 0, gameScore: 0, selected: null, data: null };
+
+async function boot() {
+  state.data = await fetch('./data/courses.json').then(r => r.json()).catch(() => ({ courses: [], characters: [] }));
+  const saved = JSON.parse(localStorage.getItem('xixi-progress') || '{}');
+  state.gameScore = saved.gameScore || 0;
+  render();
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js');
+}
+
+const icon = (name) => ({ home: '⌂', explore: '⌕', game: '文', print: '▧', parent: '☺' }[name] || '‹');
+const course = () => state.data.courses.find(c => c.id === state.courseId) || state.data.courses[0];
+const nav = () => `<nav class="tabbar">${[['home','首页'],['explore','探索'],['game','识字'],['print','活动'],['parent','家长']].map(([id,label]) => `<button class="tab ${state.page === id ? 'active' : ''}" data-go="${id}"><i>${icon(id)}</i><span>${label}</span></button>`).join('')}</nav>`;
+const mascot = (small = false) => `<div class="mascot ${small ? 'small' : ''}" aria-label="熹熹"><div class="ear left"></div><div class="ear right"></div><div class="face"><b>•</b><b>•</b><em>⌣</em></div></div>`;
+const progress = (n=2, total=4) => `<div class="progress"><span style="width:${n / total * 100}%"></span></div>`;
+
+function home() {
+  const first = state.data.courses[0];
+  return `<section class="screen home">
+    <header class="top"><div><p>早上好，熹熹</p><h1>今天想发现什么？</h1></div><button class="avatar" data-go="parent">熹</button></header>
+    <section class="hero"><div class="sparkles">✦　·　✦</div>${mascot()}<div class="cloud c1"></div><div class="cloud c2"></div><p>和熹熹一起，<br><strong>发现身边的小秘密</strong></p><button class="pill light" data-go="explore">开始探索　→</button></section>
+    <div class="section-title"><h2>继续探索</h2><button data-go="explore">全部　›</button></div>
+    <button class="continue-card ${first.color}" data-course="${first.id}"><span class="course-art">${first.emoji}</span><span><small>${first.category} · ${first.duration}</small><strong>${first.title}</strong><em>${progress(1,3)}继续学习</em></span><i>›</i></button>
+    <div class="section-title"><h2>今日小任务</h2><span class="hint">完成就有星星</span></div>
+    <button class="task" data-go="game"><span class="task-icon">文</span><span><strong>认识一个新汉字</strong><small>看看「日」像什么</small></span><b>+1 ★</b></button>
+  </section>`;
+}
+
+function explore() {
+  return `<section class="screen">
+    <header class="simple-head"><button class="back" data-go="home">‹</button><div><h1>探索小世界</h1><p>每一次好奇，都是新的发现</p></div>${mascot(true)}</header>
+    <div class="chips"><button class="chosen">全部</button><button>自然</button><button>科学</button><button>生活</button></div>
+    <div class="course-list">${state.data.courses.map((c, i) => `<button class="course-card ${c.color}" data-course="${c.id}"><div class="course-art">${c.emoji}<span>${i ? '光影' : '春天'}</span></div><div><small>${c.category}</small><h2>${c.title}</h2><p>${c.subtitle}</p><em>${c.age}　·　${c.duration}</em></div><b>›</b></button>`).join('')}</div>
+    <aside class="tease"><span>🧩</span><div><strong>更多探索正在路上</strong><small>和熹熹一起等一等吧</small></div></aside>
+  </section>`;
+}
+
+function detail() {
+  const c = course();
+  return `<section class="screen detail ${c.color}"><header class="detail-head"><button class="back" data-go="explore">‹</button><span>${c.category}</span><button class="round">♡</button></header><div class="detail-hero"><div class="giant-art">${c.emoji}</div><div class="stars">✦　·　✦</div></div><article class="sheet"><p class="eyebrow">${c.category}</p><h1>${c.title}</h1><p class="intro">${c.subtitle}</p><div class="meta"><span>适合 ${c.age}</span><span>⏱ ${c.duration}</span></div><h2>我们会发现</h2><div class="steps">${c.steps.map((s, i) => `<div><b>${i + 1}</b><span>${s.emoji}</span><p><strong>${s.title}</strong>${s.body}</p></div>`).join('')}</div><button class="primary" data-start-course="${c.id}">和熹熹一起开始　→</button><button class="secondary" data-print-course="${c.id}">▧　打印延伸活动</button></article></section>`;
+}
+
+function lesson() {
+  const c = course(), step = c.steps[0];
+  return `<section class="screen lesson"><header class="lesson-head"><button class="back" data-go="detail">‹</button><span>${progress(1,c.steps.length)}<small>1 / ${c.steps.length}</small></span><button class="close" data-go="explore">×</button></header><div class="lesson-scene"><div class="sunshine">☀</div><div class="soil"></div><div class="sprout">🌱</div><div class="drop">💧</div></div><article class="lesson-copy"><p class="eyebrow">第一站</p><h1>${step.title}</h1><p>${step.body}</p><button class="primary" data-next-lesson>我知道啦　→</button></article></section>`;
+}
+
+function game() {
+  const target = state.data.characters[state.gameIndex % state.data.characters.length];
+  const choices = [...state.data.characters].sort((a,b) => a.id === target.id ? -1 : b.id === target.id ? 1 : 0);
+  return `<section class="screen game"><header class="simple-head"><button class="back" data-go="home">‹</button><div><h1>汉字小侦探</h1><p>找到和图片一样的字</p></div><span class="star-count">★ ${state.gameScore}</span></header><div class="game-scene"><div class="sun-card">☀️</div><div class="speech">太阳出来啦！</div>${mascot()}</div><div class="game-prompt"><span>哪一个是</span><strong>${target.word}</strong><span>？</span></div><div class="character-options">${choices.map(c => `<button class="character ${state.selected === c.id ? 'selected' : ''}" data-character="${c.id}"><b>${c.hanzi}</b><small>${c.pinyin}</small></button>`).join('')}</div><button class="primary game-check" data-check-character ${state.selected ? '' : 'disabled'}>确定</button><p class="game-tip">小提示：${target.hint}</p></section>`;
+}
+
+function printPage() {
+  const c = course();
+  return `<section class="screen print"><header class="simple-head"><button class="back" data-go="home">‹</button><div><h1>亲子活动</h1><p>把探索带到现实生活里</p></div><span>🖍️</span></header><div class="print-feature"><div class="paper-preview"><span>🌱</span><b>我的种子<br>观察日记</b><i>○　○　○</i></div><div><small>推荐打印</small><h2>${c.printable.title}</h2><p>${c.printable.description}</p><button class="primary" data-print>打印活动单</button></div></div><h2 class="subhead">更多活动</h2><div class="activity-grid"><button><span>✂️</span><strong>小小影子剧场</strong><small>剪一剪，演一演</small></button><button><span>🔍</span><strong>春天寻宝卡</strong><small>去户外找一找</small></button></div><p class="print-note">打印前请和家长一起确认哦</p></section>`;
+}
+
+function parent() {
+  return `<section class="screen parent"><header class="simple-head"><button class="back" data-go="home">‹</button><div><h1>家长空间</h1><p>陪伴每一次小小的成长</p></div><span>🌿</span></header><div class="child-card"><div class="child-avatar">熹</div><div><small>熹熹的探索旅程</small><h2>本周已经探索 2 次</h2><p>${progress(2,4)} 再完成 2 次，点亮一颗成长星</p></div></div><h2 class="subhead">本周发现</h2><div class="stats"><div><b>2</b><span>探索课程</span></div><div><b>1</b><span>认识汉字</span></div><div><b>3</b><span>获得星星</span></div></div><section class="link-card"><span>熹</span><div><strong>连接「熹熹启蒙 App」</strong><p>同步孩子的学习记录和成长足迹</p></div><button data-companion>连接　›</button></section><section class="parent-tip"><span>💡</span><p><strong>陪伴小建议</strong>问问孩子：「你觉得种子最需要什么？」比直接告诉答案更有趣。</p></section></section>`;
+}
+
+function render() {
+  const pages = { home, explore, detail, lesson, game, print: printPage, parent };
+  app.innerHTML = `${pages[state.page]()}${['detail','lesson'].includes(state.page) ? '' : nav()}<div id="toast"></div>`;
+}
+
+function toast(message) { const t = document.querySelector('#toast'); t.textContent = message; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 1800); }
+
+app.addEventListener('click', event => {
+  const go = event.target.closest('[data-go]');
+  if (go) { state.page = go.dataset.go; render(); return; }
+  const c = event.target.closest('[data-course]');
+  if (c) { state.courseId = c.dataset.course; state.page = 'detail'; render(); return; }
+  const start = event.target.closest('[data-start-course]');
+  if (start) { state.courseId = start.dataset.startCourse; state.page = 'lesson'; render(); return; }
+  if (event.target.closest('[data-next-lesson]')) { state.page = 'explore'; render(); toast('太棒了，完成第一站！'); return; }
+  const char = event.target.closest('[data-character]');
+  if (char) { state.selected = char.dataset.character; render(); return; }
+  if (event.target.closest('[data-check-character]')) {
+    const target = state.data.characters[state.gameIndex % state.data.characters.length];
+    if (state.selected === target.id) { state.gameScore++; state.gameIndex++; state.selected = null; localStorage.setItem('xixi-progress', JSON.stringify({gameScore: state.gameScore})); render(); toast('答对啦！获得一颗星星 ★'); } else toast('再看看图片，慢慢想一想～');
+    return;
+  }
+  if (event.target.closest('[data-print], [data-print-course]')) { window.print(); return; }
+  if (event.target.closest('[data-companion]')) { toast('已预留与熹熹启蒙 App 的连接入口'); }
+});
+
+boot();
