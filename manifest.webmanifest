@@ -1,9 +1,9 @@
 {
   "name": "熹熹探索",
-  "version": "0.1.0",
-  "build_identity": "xixi-explore-v0.1.0",
+  "version": "0.1.1",
+  "build_identity": "xixi-explore-v0.1.1",
   "short_name": "熹熹探索",
-  "description": "和熹熹一起发现文字、自然与生活里的小秘密。",
+  "description": "发现文字、自然与生活里的小秘密。",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#FFF7EC",
