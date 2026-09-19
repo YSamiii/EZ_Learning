@@ -1,5 +1,5 @@
-const RELEASE_VERSION = '0.3.0';
-const CACHE = 'xixi-explore-v0.3.0';
+const RELEASE_VERSION = '0.3.1-rc1';
+const CACHE = 'xixi-explore-v0.3.1-rc1';
 const ASSETS = ['./', './index.html', './styles.css', './app.js', './profile.js', './recommendations.js', './progression.js', './data/courses.json', './manifest.webmanifest', './release.json', './icons/icon-192.svg', './icons/icon-512.svg'];
 self.addEventListener('install', event => event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(ASSETS))));
 self.addEventListener('activate', event => event.waitUntil(Promise.all([
