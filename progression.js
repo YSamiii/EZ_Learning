@@ -1,0 +1,6 @@
+const KEY='xixi-course-progress';
+export function loadProgress(){try{return JSON.parse(localStorage.getItem(KEY)||'{}')}catch{return {}}}
+export function startCourse(courseId){const all=loadProgress(),session={courseId,stepIndex:0,status:'active'};all[courseId]=session;localStorage.setItem(KEY,JSON.stringify(all));return session}
+export function sessionFor(courseId){return loadProgress()[courseId]||null}
+export function completeCurrentStep(course){const all=loadProgress(),s=all[course.id]||{courseId:course.id,stepIndex:0,status:'active'};if(s.status==='complete')return s;if(s.stepIndex<course.steps.length-1)s.stepIndex++;else{s.status='complete';s.completedAt=new Date().toISOString()}all[course.id]=s;localStorage.setItem(KEY,JSON.stringify(all));return s}
+export function validateCourses(courses){const sceneTypes=new Set(['seed_growth','light_shadow','character_focus','moon_story','map_direction','shape_sort']);const errors=[];for(const c of courses){if(!c.steps?.length)errors.push(c.id+': no steps');c.steps?.forEach((s,i)=>{if(!s.id||!s.scene?.type||!s.scene?.asset_id||!Array.isArray(s.scene.elements)||!sceneTypes.has(s.scene.type))errors.push(c.id+': invalid scene at '+i)})}return errors}
