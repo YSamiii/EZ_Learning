@@ -1,6 +1,6 @@
 {
   "appName": "熹熹探索",
-  "version": "0.3.1-rc1",
-  "buildIdentity": "xixi-explore-v0.3.1-rc1",
+  "version": "0.3.1",
+  "buildIdentity": "xixi-explore-v0.3.1",
   "releaseChannel": "production"
 }
