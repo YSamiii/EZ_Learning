@@ -1,0 +1,6 @@
+{"schemaVersion":"1.0","printables":[
+{"id":"print.zh.spring-trace","title":"春 / 花 / 雨 描红卡","course_id":"chinese.spring","skill_ids":["zh.character.spring","zh.character.flower","zh.character.rain"],"domain":"chinese","age_range":{"minMonths":30,"maxMonths":84},"printable_type":"tracing","description":"边说边描，找找春天的字。"},
+{"id":"print.culture.mid-autumn-match","title":"中秋节配对卡","course_id":"culture.festival.mid_autumn","skill_ids":["culture.mid-autumn","zh.character.moon"],"domain":"culture","age_range":{"minMonths":30,"maxMonths":84},"printable_type":"matching_cards","description":"把月亮、月饼、灯笼和团圆配在一起。"},
+{"id":"print.science.seed-observation","title":"种子观察记录单","course_id":"science.seed-journey","skill_ids":["science.seed.needs"],"domain":"science","age_range":{"minMonths":30,"maxMonths":84},"printable_type":"observation_log","description":"连续七天画下种子的变化。"},
+{"id":"print.science.shadow-theatre","title":"小小影子剧场","course_id":"science.shadow-magic","skill_ids":["science.shadow.light"],"domain":"science","age_range":{"minMonths":30,"maxMonths":84},"printable_type":"cutout","description":"剪下角色，和家人演一场影子戏。"}
+]}

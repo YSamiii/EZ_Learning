@@ -1,0 +1,13 @@
+{
+  "name": "熹熹探索",
+  "version": "0.4.0-rc1",
+  "channel": "owner-review",
+  "formalRelease": false,
+  "buildIdentity": "xixi-explore-v0.4.0-rc1",
+  "serviceWorkerCache": "xixi-explore-v0.4.0-rc1",
+  "qa": {
+    "migrationRuntimeEquality": "PASS",
+    "migrationSemantic": "PASS",
+    "v040Regression": "PASS"
+  }
+}

@@ -1,6 +1,5 @@
-const KEY='xixi-course-progress';
-export function loadProgress(){try{return JSON.parse(localStorage.getItem(KEY)||'{}')}catch{return {}}}
-export function startCourse(courseId){const all=loadProgress(),session={courseId,stepIndex:0,status:'active'};all[courseId]=session;localStorage.setItem(KEY,JSON.stringify(all));return session}
-export function sessionFor(courseId){return loadProgress()[courseId]||null}
-export function completeCurrentStep(course){const all=loadProgress(),s=all[course.id]||{courseId:course.id,stepIndex:0,status:'active'};if(s.status==='complete')return s;if(s.stepIndex<course.steps.length-1)s.stepIndex++;else{s.status='complete';s.completedAt=new Date().toISOString()}all[course.id]=s;localStorage.setItem(KEY,JSON.stringify(all));return s}
-export function validateCourses(courses){const sceneTypes=new Set(['seed_growth','light_shadow','character_focus','moon_story','map_direction','shape_sort']);const errors=[];for(const c of courses){if(!c.steps?.length)errors.push(c.id+': no steps');c.steps?.forEach((s,i)=>{if(!s.id||!s.scene?.type||!s.scene?.asset_id||!Array.isArray(s.scene.elements)||!sceneTypes.has(s.scene.type))errors.push(c.id+': invalid scene at '+i)})}return errors}
+import {beginCourse,courseProgress,completeStep} from './learning.js';
+export const startCourse=beginCourse;
+export const sessionFor=courseProgress;
+export const completeCurrentStep=completeStep;
+export function validateCourses(courses,activities=[]){const errors=[],ids=new Set(),activityIds=new Set(activities.map(x=>x.id));for(const c of courses){if(ids.has(c.id))errors.push('duplicate course '+c.id);ids.add(c.id);if(!c.steps?.length)errors.push(c.id+': no steps');const steps=new Set();for(const s of c.steps||[]){if(steps.has(s.id))errors.push(c.id+': duplicate step '+s.id);steps.add(s.id);if(!s.activity_id||!activityIds.has(s.activity_id))errors.push(c.id+': missing activity '+s.activity_id)}}return errors}

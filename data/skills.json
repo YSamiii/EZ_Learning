@@ -1,0 +1,17 @@
+{"schemaVersion":"1.0","skills":[
+{"id":"zh.character.spring","character":"春","pronunciation":{"pinyin":"chūn","languageVariant":"mandarin"},"meaning":"春天","visualConcept":"spring flowers","relatedVocabulary":["春天","春风","春雨"],"relatedSentence":"春雨落下来了。","difficulty":1,"age_range":{"minMonths":30,"maxMonths":84},"tags":["自然","季节","中文"]},
+{"id":"zh.character.flower","character":"花","pronunciation":{"pinyin":"huā","languageVariant":"mandarin"},"meaning":"花朵","visualConcept":"flower","relatedVocabulary":["花朵","花园"],"relatedSentence":"花儿开了。","difficulty":1,"age_range":{"minMonths":30,"maxMonths":84},"tags":["自然","中文"]},
+{"id":"zh.character.rain","character":"雨","pronunciation":{"pinyin":"yǔ","languageVariant":"mandarin"},"meaning":"雨水","visualConcept":"rain cloud","relatedVocabulary":["春雨","下雨"],"relatedSentence":"天空下雨了。","difficulty":1,"age_range":{"minMonths":30,"maxMonths":84},"tags":["天气","中文"]},
+{"id":"zh.character.wind","character":"风","pronunciation":{"pinyin":"fēng","languageVariant":"mandarin"},"meaning":"风","visualConcept":"wind","relatedVocabulary":["春风","大风"],"relatedSentence":"春风轻轻吹。","difficulty":1,"age_range":{"minMonths":30,"maxMonths":84},"tags":["天气","中文"]},
+{"id":"zh.character.cloud","character":"云","pronunciation":{"pinyin":"yún","languageVariant":"mandarin"},"meaning":"云朵","visualConcept":"cloud","relatedVocabulary":["白云","云彩"],"relatedSentence":"天上有白云。","difficulty":1,"age_range":{"minMonths":30,"maxMonths":84},"tags":["天气","中文"]},
+{"id":"zh.character.tree","character":"树","pronunciation":{"pinyin":"shù","languageVariant":"mandarin"},"meaning":"树木","visualConcept":"tree","relatedVocabulary":["树木","大树"],"relatedSentence":"树上有小鸟。","difficulty":1,"age_range":{"minMonths":30,"maxMonths":84},"tags":["自然","中文"]},
+{"id":"zh.character.grass","character":"草","pronunciation":{"pinyin":"cǎo","languageVariant":"mandarin"},"meaning":"小草","visualConcept":"grass","relatedVocabulary":["小草","草地"],"relatedSentence":"小草绿了。","difficulty":1,"age_range":{"minMonths":30,"maxMonths":84},"tags":["自然","中文"]},
+{"id":"zh.character.sun","character":"日","pronunciation":{"pinyin":"rì","languageVariant":"mandarin"},"meaning":"太阳","visualConcept":"sun","relatedVocabulary":["日光","太阳"],"relatedSentence":"太阳出来了。","difficulty":1,"age_range":{"minMonths":24,"maxMonths":84},"tags":["自然","中文"]},
+{"id":"zh.character.moon","character":"月","pronunciation":{"pinyin":"yuè","languageVariant":"mandarin"},"meaning":"月亮","visualConcept":"moon","relatedVocabulary":["月亮","中秋"],"relatedSentence":"月亮圆圆的。","difficulty":1,"age_range":{"minMonths":30,"maxMonths":84},"tags":["自然","文化","中文"]},
+{"id":"zh.character.water","character":"水","pronunciation":{"pinyin":"shuǐ","languageVariant":"mandarin"},"meaning":"水","visualConcept":"water drop","relatedVocabulary":["雨水","喝水"],"relatedSentence":"小种子需要水。","difficulty":1,"age_range":{"minMonths":24,"maxMonths":84},"tags":["自然","中文"]},
+{"id":"science.seed.needs","meaning":"植物生长需要条件","difficulty":1,"age_range":{"minMonths":30,"maxMonths":84},"tags":["科学","种子"]},
+{"id":"science.shadow.light","meaning":"光和影子的关系","difficulty":1,"age_range":{"minMonths":30,"maxMonths":84},"tags":["科学","光影"]},
+{"id":"culture.mid-autumn","meaning":"中秋节与团圆","difficulty":1,"age_range":{"minMonths":30,"maxMonths":84},"tags":["文化","节日"]},
+{"id":"space.direction","meaning":"认识方向","difficulty":1,"age_range":{"minMonths":36,"maxMonths":96},"tags":["地理","方向"]},
+{"id":"logic.sort","meaning":"形状分类","difficulty":1,"age_range":{"minMonths":24,"maxMonths":84},"tags":["逻辑","分类"]}
+]}
