@@ -1,0 +1,57 @@
+name: Owner Review preview for v0.4.0-rc1
+
+on:
+  push:
+    branches:
+      - release-candidate/v0.4.0-rc1
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: owner-review-pages-preview
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Read the existing production site
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: source-main
+      - name: Read the RC commit that triggered this run
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          path: source-rc
+      - name: Keep the production root and add the isolated preview
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p site/preview/v0.4.0-rc1
+          rsync -a --exclude='.git/' --exclude='.github/' source-main/ site/
+          cp source-rc/index.html source-rc/app.js source-rc/learning.js source-rc/profile.js source-rc/progression.js source-rc/recommendations.js source-rc/styles.css source-rc/sw.js source-rc/manifest.webmanifest source-rc/release.json site/preview/v0.4.0-rc1/
+          cp -a source-rc/data source-rc/icons site/preview/v0.4.0-rc1/
+          diff -qr --exclude=.git --exclude=.github --exclude=preview source-main site
+          grep -F "const RELEASE_VERSION='0.4.0-rc1'" site/preview/v0.4.0-rc1/sw.js
+          grep -F "const CACHE='xixi-preview-v0.4.0-rc1'" site/preview/v0.4.0-rc1/sw.js
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+      - name: Upload site
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: site
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy the combined site
+        id: deployment
+        uses: actions/deploy-pages@v4
