@@ -1,0 +1,78 @@
+name: Fixed RC Preview
+
+on:
+  push:
+    branches:
+      - release-candidate/current
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: fixed-rc-pages-preview
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Read unchanged production source
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: production
+      - name: Read canonical RC source at the triggering commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          path: candidate
+      - name: Assemble production root and fixed preview path
+        shell: bash
+        run: |
+          set -euo pipefail
+          node - <<'NODE'
+          const fs = require('node:fs');
+          const release = JSON.parse(fs.readFileSync('candidate/release.json', 'utf8'));
+          if (release.version !== '0.4.0-rc2' || release.buildIdentity !== 'xixi-explore-v0.4.0-rc2' || release.releaseChannel !== 'candidate') {
+            throw new Error('Candidate root is not the expected RC2 build');
+          }
+          if (fs.existsSync('candidate/preview')) throw new Error('Duplicate preview source is forbidden');
+          NODE
+          mkdir -p site/preview
+          rsync -a --exclude='.git/' --exclude='.github/' production/ site/
+          cp candidate/index.html candidate/app.js candidate/presentation.js candidate/learning.js candidate/profile.js candidate/progression.js candidate/recommendations.js candidate/styles.css candidate/sw.js candidate/manifest.webmanifest candidate/release.json site/preview/
+          cp -a candidate/data candidate/icons site/preview/
+          node - <<'NODE'
+          const fs = require('node:fs');
+          const file = 'site/sw.js';
+          let worker = fs.readFileSync(file, 'utf8');
+          const claim = '  self.clients.claim()';
+          const getGuard = "  if (event.request.method !== 'GET') return;";
+          if (!worker.includes(claim) || !worker.includes(getGuard)) throw new Error('Production SW changed; review isolation patch');
+          worker = worker.replace(claim, "  caches.open(CACHE).then(cache => cache.keys().then(keys => Promise.all(keys.filter(request => new URL(request.url).pathname.startsWith('/EZ_Learning/preview/')).map(request => cache.delete(request))))),\n" + claim);
+          worker = worker.replace(getGuard, getGuard + "\n  if (new URL(event.request.url).pathname.startsWith('/EZ_Learning/preview/')) return;");
+          fs.writeFileSync(file, worker);
+          NODE
+          diff -qr --exclude='.git' --exclude='.github' --exclude='sw.js' --exclude='preview' production site
+          for file in index.html app.js presentation.js learning.js profile.js progression.js recommendations.js styles.css sw.js manifest.webmanifest release.json data/activities.json data/courses.json data/printables.json data/skills.json icons/icon-192.svg icons/icon-512.svg; do
+            cmp "candidate/$file" "site/preview/$file"
+          done
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+      - name: Upload combined site
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: site
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy fixed preview alongside formal site
+        id: deployment
+        uses: actions/deploy-pages@v4
