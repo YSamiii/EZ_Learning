@@ -36,14 +36,17 @@ jobs:
           node - <<'NODE'
           const fs = require('node:fs');
           const release = JSON.parse(fs.readFileSync('candidate/release.json', 'utf8'));
-          if (release.version !== '0.4.0-rc2' || release.buildIdentity !== 'xixi-explore-v0.4.0-rc2' || release.releaseChannel !== 'candidate') {
-            throw new Error('Candidate root is not the expected RC2 build');
+          if (release.version !== '0.4.0-rc3' || release.buildIdentity !== 'xixi-explore-v0.4.0-rc3' || release.releaseChannel !== 'candidate') {
+            throw new Error('Candidate root is not the expected RC3 build');
           }
           if (fs.existsSync('candidate/preview')) throw new Error('Duplicate preview source is forbidden');
+          const worker = fs.readFileSync('candidate/sw.js', 'utf8');
+          if (!worker.includes("CACHE='xixi-preview-v0.4.0-rc3'")) throw new Error('RC3 cache identity mismatch');
           NODE
+          node candidate/content-validator.mjs
           mkdir -p site/preview
           rsync -a --exclude='.git/' --exclude='.github/' production/ site/
-          cp candidate/index.html candidate/app.js candidate/presentation.js candidate/learning.js candidate/profile.js candidate/progression.js candidate/recommendations.js candidate/styles.css candidate/sw.js candidate/manifest.webmanifest candidate/release.json site/preview/
+          cp candidate/index.html candidate/app.js candidate/presentation.js candidate/presentation-policy.js candidate/audio.js candidate/learning.js candidate/profile.js candidate/progression.js candidate/recommendations.js candidate/styles.css candidate/sw.js candidate/manifest.webmanifest candidate/release.json site/preview/
           cp -a candidate/data candidate/icons site/preview/
           node - <<'NODE'
           const fs = require('node:fs');
@@ -57,7 +60,7 @@ jobs:
           fs.writeFileSync(file, worker);
           NODE
           diff -qr --exclude='.git' --exclude='.github' --exclude='sw.js' --exclude='preview' production site
-          for file in index.html app.js presentation.js learning.js profile.js progression.js recommendations.js styles.css sw.js manifest.webmanifest release.json data/activities.json data/courses.json data/printables.json data/skills.json icons/icon-192.svg icons/icon-512.svg; do
+          for file in index.html app.js presentation.js presentation-policy.js audio.js learning.js profile.js progression.js recommendations.js styles.css sw.js manifest.webmanifest release.json data/activities.json data/presentation.json data/courses.json data/printables.json data/skills.json icons/icon-192.svg icons/icon-512.svg; do
             cmp "candidate/$file" "site/preview/$file"
           done
       - name: Configure Pages
