@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0",
+  "activities": {
+    "zh.spring.listen": {"child_prompt":"听一听，找一找","audio_prompt":"春"},
+    "zh.spring.image": {"child_prompt":"哪个是春？","audio_prompt":"看看花，哪个是春？"},
+    "zh.spring.match": {"child_prompt":"配一配","audio_prompt":"帮春找到好朋友。"},
+    "zh.spring.sentence": {"child_prompt":"听一听，选一选","audio_prompt":"看看图，选对的句子。"},
+    "zh.spring.speak": {"child_prompt":"你看到了什么？","audio_prompt":"你看到了什么？说给家人听。"},
+    "zh.spring.trace": {"child_prompt":"用手指描一描","audio_prompt":"用手指描一描春。"},
+    "culture.mid-autumn.intro": {"child_prompt":"今天是中秋节","audio_prompt":"今天是中秋节。我们和家人一起看月亮。","parent_extension":"可以和孩子一起找找今晚的月亮。"},
+    "culture.mid-autumn.words": {"child_prompt":"哪个是月饼？","audio_prompt":"哪个是月饼？"},
+    "culture.mid-autumn.story": {"child_prompt":"听嫦娥的故事","audio_prompt":"这是传统神话故事。很久以前，人们讲过嫦娥的故事。","parent_extension":"告诉孩子：故事是人们的想象，不是事实。"},
+    "culture.mid-autumn.game": {"child_prompt":"找月亮和月饼","audio_prompt":"找一找月亮和月饼。"},
+    "culture.mid-autumn.speak": {"child_prompt":"月亮什么样？","audio_prompt":"月亮是什么样的？说给家人听。"},
+    "culture.mid-autumn.print": {"child_prompt":"一起配一配","audio_prompt":"和家人一起配一配。"},
+    "culture.mid-autumn.realworld": {"child_prompt":"今晚找月亮","audio_prompt":"今晚和家人找一找月亮。","parent_extension":"可以问孩子：月亮和昨天一样吗？"},
+    "science.seed.guess": {"child_prompt":"种子需要什么？","audio_prompt":"小种子长大，需要什么？"},
+    "science.seed.look": {"child_prompt":"看种子发芽","audio_prompt":"种子喝了水，长出小芽。"},
+    "science.seed.sequence": {"child_prompt":"排排队","audio_prompt":"种子、发芽、长叶子，排排队。"},
+    "science.seed.speak": {"child_prompt":"种子变什么了？","audio_prompt":"小种子变成什么了？说一说。"},
+    "science.seed.realworld": {"child_prompt":"回家种豆子","audio_prompt":"和家人种一颗豆子，每天看看它。"},
+    "science.shadow.source": {"child_prompt":"找一找光","audio_prompt":"找一找，什么东西会发光？"},
+    "science.shadow.question": {"child_prompt":"没有光会怎样？","audio_prompt":"没有光，还能看到影子吗？"},
+    "science.shadow.direction": {"child_prompt":"影子去哪边？","audio_prompt":"光从左边来，影子去哪边？"},
+    "science.shadow.speak": {"child_prompt":"影子变了吗？","audio_prompt":"影子变了吗？说给家人听。"},
+    "science.shadow.realworld": {"child_prompt":"用手电试试","audio_prompt":"用手电筒照一照玩具。"},
+    "legacy.map.east": {"child_prompt":"太阳在哪边？","audio_prompt":"看看太阳在哪边升起。"},
+    "legacy.shape.sort": {"child_prompt":"找一样的形状","audio_prompt":"找一找一样的形状。"}
+  }
+}
