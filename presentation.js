@@ -25,7 +25,7 @@ function chineseScene(activity){
     type==='image_choose'?'<div class="chinese-picture">'+flower+'</div><div class="picture-frame">春天的花园</div>':
     type==='match'?'<div class="scene-match"><span class="scene-glyph">'+escapeText(focus)+'</span><span class="scene-dots">••••</span><span class="scene-word">'+phrase+'</span></div>':
     type==='image_sentence'?'<div class="chinese-picture rain-picture">'+rain+'</div><div class="picture-frame">'+phrase+'</div>':
-    type==='speak'?'<div class="scene-speech">'+escapeText(activity.body)+'</div><div class="scene-speak-flower">'+flower+'</div>':
+    type==='speak'?'<div class="scene-speech">'+escapeText(activity.child_prompt||'说一说')+'</div><div class="scene-speak-flower">'+flower+'</div>':
     '<div class="scene-trace-grid"><span>'+escapeText(focus)+'</span></div><div class="scene-pencil" aria-hidden="true">✎</div>';
   return '<div class="art-scene art-chinese art-'+escapeText(type)+'" data-scene="'+escapeText(activity.scene.asset_id)+'"><div class="scene-glow"></div>'+main+'</div>';
 }
@@ -40,8 +40,7 @@ function moonScene(activity){
 function seedScene(activity){
   const type=activity.activity_type;
   const elements=activity.scene.elements||[];
-  const stages=String(activity.answer||'').split('→').map(part=>part.trim());
-  const stage=type==='sequence'?'<div class="seed-stages">'+stages.map((part,index)=>(index?'<b>→</b>':'')+'<span>'+escapeText(part)+'</span>').join('')+'</div>':type==='real_world'?'<div class="seed-observe">今天看看它</div>':'';
+  const stage=type==='sequence'?'<div class="seed-stages" aria-hidden="true"><span>●</span><b>→</b><span>♧</span><b>→</b><span>♣</span></div>':type==='real_world'?'<div class="seed-observe">种一颗豆子</div>':'';
   return '<div class="art-scene art-seed art-'+escapeText(type)+'" data-scene="'+escapeText(activity.scene.asset_id)+'"><div class="seed-sun"></div><div class="seed-cloud"></div>'+(elements.includes('water')?'<div class="seed-drop">'+rain+'</div>':'')+'<div class="seed-main">'+seed+'</div><div class="seed-soil"></div>'+stage+'</div>';
 }
 function shadowScene(activity){
@@ -66,7 +65,7 @@ const optionArt=text=>{
   return '<span class="option-sparkle" aria-hidden="true">✦</span>';
 };
 const elementNames={moon:'圆月亮',mooncake:'月饼',lantern:'小灯笼',family:'和家人一起',story:'听一个故事',seed:'小种子',water:'水',sprout:'新芽',sun:'阳光',soil:'土壤',leaf:'叶子',light_source:'光源',object:'小物体',shadow:'影子',direction:'方向',compass:'指南针',triangle:'三角形',circle:'圆形',square:'正方形'};
-function observationTiles(activity){const elements=(activity.scene?.elements||[]).slice(0,4);if(!elements.length)return '';return '<div class="observation-tiles">'+elements.map(item=>'<div class="observation-tile"><span class="observation-icon">'+optionArt(elementNames[item]||item)+'</span><span>'+escapeText(elementNames[item]||item)+'</span></div>').join('')+'</div>'}
+function observationTiles(activity){const elements=(activity.scene?.elements||[]).slice(0,2);if(!elements.length)return '';return '<div class="observation-tiles">'+elements.map(item=>'<div class="observation-tile"><span class="observation-icon">'+optionArt(elementNames[item]||item)+'</span><span>'+escapeText(elementNames[item]||item)+'</span></div>').join('')+'</div>'}
 function optionCard(activity,option,selected,feedback){
   const chosen=selected===option;
   const stateClass=chosen?(feedback===true?' is-correct':feedback===false?' is-incorrect':' is-selected'):'';
@@ -79,15 +78,13 @@ export function optionsMarkup(activity,selected,feedback){
   if(!activity.options?.length)return '';
   const type=activity.activity_type;
   const cards=activity.options.map(option=>optionCard(activity,option,selected,feedback)).join('');
-  if(type==='match'){const focus=activity.scene.elements?.find(item=>/[\u3400-\u9fff]/u.test(item))||activity.answer?.match(/[\u3400-\u9fff]/u)?.[0]||'字';return '<div class="match-board"><div class="match-source"><span class="match-source-caption">找到它的好朋友</span><strong>'+escapeText(focus)+'</strong></div><div class="match-link" aria-hidden="true">↔</div><div class="answer-list match-targets">'+cards+'</div></div>'}
+  if(type==='match'){const focus=activity.scene.elements?.find(item=>/[\u3400-\u9fff]/u.test(item))||activity.answer?.match(/[\u3400-\u9fff]/u)?.[0]||'字';return '<div class="match-board"><div class="match-source"><span class="match-source-caption">这张卡</span><strong>'+escapeText(focus)+'</strong></div><div class="match-link" aria-hidden="true">↔</div><div class="answer-list match-targets">'+cards+'</div></div>'}
   if(type==='sequence')return '<div class="answer-list sequence-answers">'+cards+'</div>';
   return '<div class="answer-list '+(type==='listen_choose'||type==='image_choose'?'answer-grid':'')+'">'+cards+'</div>';
 }
 export function activityExtraMarkup(activity){
-  if(activity.activity_type==='trace'){const focus=activity.scene.elements?.find(item=>/[\u3400-\u9fff]/u.test(item))||activity.visual?.match(/[\u3400-\u9fff]/u)?.[0]||'字';return '<div class="trace-panel"><div class="trace-title"><span>跟着字形，用手指慢慢描</span><button type="button" data-clear-trace>重新描</button></div><div class="trace-surface"><span aria-hidden="true">'+escapeText(focus)+'</span><canvas class="trace-canvas" aria-label="描写'+escapeText(focus)+'字的画布"></canvas></div></div>'}
-  if(activity.activity_type==='speak')return '<div class="speak-card"><span class="speak-icon" aria-hidden="true">◌</span><div><small>轻轻说给家人听</small><p>'+escapeText(activity.prompt||activity.body)+'</p></div></div>';
-  if(activity.activity_type==='info')return '<div class="observe-note">看一看画面，再和家人聊一聊。</div>'+observationTiles(activity);
-  if(activity.activity_type==='real_world')return '<div class="observe-note">可以现在试，也可以稍后和家人一起做。</div>'+observationTiles(activity);
-  if(activity.activity_type==='printable')return '<div class="observe-note">活动单会在家长陪同下打开。</div>'+observationTiles(activity);
+  if(activity.activity_type==='trace'){const focus=activity.scene.elements?.find(item=>/[\u3400-\u9fff]/u.test(item))||activity.visual?.match(/[\u3400-\u9fff]/u)?.[0]||'字';return '<div class="trace-panel"><div class="trace-title"><span>用手指描一描</span><button type="button" data-clear-trace>重描</button></div><div class="trace-surface"><span aria-hidden="true">'+escapeText(focus)+'</span><canvas class="trace-canvas" aria-label="描写'+escapeText(focus)+'字的画布"></canvas></div></div>'}
+  if(activity.activity_type==='speak')return '<div class="speak-card"><span class="speak-icon" aria-hidden="true">◌</span><span>说给家人听</span></div>';
+  if(['info','real_world','printable'].includes(activity.activity_type))return observationTiles(activity);
   return '';
 }

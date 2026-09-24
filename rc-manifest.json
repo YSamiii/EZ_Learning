@@ -1,15 +1,17 @@
 {
   "name": "熹熹探索",
-  "version": "0.4.0-rc2",
+  "version": "0.4.0-rc3",
   "channel": "owner-review",
   "formalRelease": false,
-  "buildIdentity": "xixi-explore-v0.4.0-rc2",
-  "serviceWorkerCache": "xixi-preview-v0.4.0-rc2",
+  "buildIdentity": "xixi-explore-v0.4.0-rc3",
+  "serviceWorkerCache": "xixi-preview-v0.4.0-rc3",
   "qa": {
     "migrationRuntimeEquality": "PASS",
     "migrationSemantic": "PASS",
     "v040Regression": "PASS",
-    "visualInteraction": "PASS",
+    "preschoolInformationArchitecture": "PASS",
+    "textDensity": "PASS",
+    "audioAndParentLayer": "PASS",
     "serviceWorkerRegression": "PASS",
     "migrationRegression": "PASS",
     "contentValidation": "PASS"

@@ -301,3 +301,15 @@ button:active{transform:scale(.97)}
 .trace-surface>span{font-size:175px;color:#e9d6c6;line-height:1;user-select:none;pointer-events:none}.trace-canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none}
 @media(max-width:375px){.art-scene{height:205px}.lesson-copy{min-height:calc(100dvh - 251px);padding:19px 16px calc(24px + env(safe-area-inset-bottom))}.lesson-copy h1{font-size:23px}.answer-card{padding:9px 10px;gap:8px}.answer-text{font-size:15px}.match-board{grid-template-columns:minmax(76px,31%) 18px minmax(0,1fr)}.match-source strong{font-size:55px}.match-targets .answer-text{font-size:13px}}
 @media(prefers-reduced-motion:reduce){.answer-card{transition:none}}
+.child-layer{display:block}.child-layer [data-child-instruction]{font-size:25px;line-height:1.2;margin-bottom:12px;max-width:15em}
+.child-layer .audio-card{min-height:66px;margin-bottom:14px;background:#fff1dd;border-color:#dfb991;box-shadow:0 3px 0 #dfc3a6}
+.child-layer .audio-card .audio-icon{width:45px;height:45px;font-size:30px}.child-layer .audio-card span:nth-child(2){font-size:18px}
+.audio-card.is-playing{background:#e7f2e8;border-color:#82ad89}.audio-card.is-playing .audio-icon{background:#6e9c78;animation:audio-breathe 1.1s ease-in-out infinite}
+@keyframes audio-breathe{50%{transform:scale(1.09)}}
+.parent-layer{margin-top:26px;border-top:1px solid #e8dfd1;padding-top:12px;color:#695c51}
+.parent-layer summary{display:list-item;list-style:disclosure-closed;cursor:pointer;padding:12px 4px;min-height:44px;font-size:14px;font-weight:750}
+.parent-layer[open] summary{list-style:disclosure-open}.parent-content{background:#f5f1e9;border-radius:16px;padding:14px 16px;margin-top:5px}
+.parent-content p{margin:0 0 11px;font-size:13px;line-height:1.55}.parent-content p:last-child{margin-bottom:0}.parent-content strong{display:block;color:#82664f;margin-bottom:2px}
+.glyph-card .answer-text{display:none}.glyph-card .answer-glyph{font-size:53px}
+.child-layer .feedback{align-items:center}.child-layer .feedback strong{font-size:18px}.child-layer .feedback-symbol{width:38px;height:38px}
+@media(prefers-reduced-motion:reduce){.audio-card.is-playing .audio-icon{animation:none}}

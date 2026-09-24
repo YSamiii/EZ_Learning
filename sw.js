@@ -1,8 +1,8 @@
-const RELEASE_VERSION='0.4.0-rc2';
-const CACHE='xixi-preview-v0.4.0-rc2';
-const ASSETS=['./','./index.html','./styles.css','./app.js','./presentation.js','./profile.js','./recommendations.js','./progression.js','./learning.js','./data/courses.json','./data/activities.json','./data/skills.json','./data/printables.json','./manifest.webmanifest','./release.json','./icons/icon-192.svg','./icons/icon-512.svg'];
+const RELEASE_VERSION='0.4.0-rc3';
+const CACHE='xixi-preview-v0.4.0-rc3';
+const ASSETS=['./','./index.html','./styles.css','./app.js','./presentation.js','./presentation-policy.js','./audio.js','./profile.js','./recommendations.js','./progression.js','./learning.js','./data/courses.json','./data/activities.json','./data/presentation.json','./data/skills.json','./data/printables.json','./manifest.webmanifest','./release.json','./icons/icon-192.svg','./icons/icon-512.svg'];
 self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS)).then(()=>self.skipWaiting())));
 self.addEventListener('activate',event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key.startsWith('xixi-preview-')&&key!==CACHE).map(key=>caches.delete(key)))).then(()=>self.clients.claim())));
-self.addEventListener('message',event=>{if(event.data?.type!=='GET_SW_INFO')return;const payload={type:'SW_INFO',version:RELEASE_VERSION,cacheName:CACHE,buildIdentity:'xixi-explore-v0.4.0-rc2'};if(event.ports?.[0])event.ports[0].postMessage(payload);else event.source?.postMessage(payload)});
+self.addEventListener('message',event=>{if(event.data?.type!=='GET_SW_INFO')return;const payload={type:'SW_INFO',version:RELEASE_VERSION,cacheName:CACHE,buildIdentity:'xixi-explore-v0.4.0-rc3'};if(event.ports?.[0])event.ports[0].postMessage(payload);else event.source?.postMessage(payload)});
 const networkFirst=request=>fetch(request).then(response=>{const copy=response.clone();caches.open(CACHE).then(cache=>cache.put(request,copy));return response}).catch(()=>caches.open(CACHE).then(cache=>cache.match(request).then(hit=>hit||cache.match('./index.html'))));
 self.addEventListener('fetch',event=>{if(event.request.method!=='GET')return;const destination=event.request.destination;const fresh=event.request.mode==='navigate'||['script','style'].includes(destination)||event.request.url.includes('/data/');event.respondWith(fresh?networkFirst(event.request):caches.open(CACHE).then(cache=>cache.match(event.request).then(hit=>hit||networkFirst(event.request))))});
